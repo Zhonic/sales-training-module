@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sales Training Module</title>
+    <!-- Tailwind CSS CDN for responsive and modern styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Font 'Inter' for professional typography -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Base body styling with Inter font and a light background */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f2f5;
+        }
+        /* Main container for the module, centered with max-width for readability on large screens */
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 1rem;
+        }
+        /* Card-like styling for content sections */
+        .card {
+            background-color: #ffffff;
+            border-radius: 0.75rem; /* Rounded corners for the card */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+            padding: 2rem;
+        }
+        /* Styling for quiz options to make them interactive and visually distinct */
+        .quiz-option {
+            background-color: #f7fafc;
+            border: 1px solid #e2e8f0;
+            border-radius: 0.5rem; /* Rounded corners for options */
+            padding: 0.75rem 1rem;
+            margin-bottom: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease-in-out; /* Smooth transition for hover effects */
+        }
+        .quiz-option:hover {
+            background-color: #ebf4ff;
+            border-color: #90cdf4;
+        }
+        /* Styling for selected, correct, and incorrect quiz options */
+        .quiz-option.selected {
+            background-color: #dbeafe;
+            border-color: #3b82f6;
+            font-weight: 600;
+        }
+        .quiz-option.correct {
+            background-color: #d1fae5;
+            border-color: #10b981;
+        }
+        .quiz-option.incorrect {
+            background-color: #fee2e2;
+            border-color: #ef4444;
+        }
+        /* Primary button styling */
+        .button-primary {
+            background-color: #3b82f6; /* Blue background */
+            color: white;
+            padding: 0.75rem 1.5rem;
+            border-radius: 0.5rem; /* Rounded corners for buttons */
+            font-weight: 600;
+            transition: background-color 0.2s;
+        }
+        .button-primary:hover {
+            background-color: #2563eb; /* Darker blue on hover */
+        }
+        /* Styling for badges */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #60a5fa; /* Default blue for badges */
+            color: white;
+            border-radius: 9999px; /* Pill-shaped badges */
+            padding: 0.5rem 1rem;
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin: 0.25rem;
+        }
+        .badge.earned {
+            background-color: #34d399; /* Green for earned badges */
+        }
+        /* Utility class to hide sections */
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container py-8">
+        <!-- Header section with title, article reference, and dynamic score/badge display -->
+        <header class="text-center mb-8">
+            <h1 class="text-4xl font-bold text-gray-800 mb-2">Mastering Selective Sales Training</h1>
+            <p class="text-lg text-gray-600">Based on "Does Selective Sales Force Training Work?" by Atefi et al. (2018)</p>
+            <div class="mt-4 flex justify-center items-center space-x-4">
+                <div class="flex items-center text-gray-700">
+                    <i class="fas fa-star text-yellow-500 mr-2"></i>
+                    <span id="score">Score: 0</span>
+                </div>
+                <div class="flex items-center text-gray-700">
+                    <i class="fas fa-trophy text-purple-500 mr-2"></i>
+                    <span id="badges-count">Badges: 0</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main content area where module sections are displayed -->
+        <main class="card">
+            <!-- Introduction Section: Welcomes the user and sets the module's purpose -->
+            <section id="intro-section" class="module-section">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Welcome, Sales Manager!</h2>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    In today's dynamic retail environment, effective sales training is crucial. But how do you maximize your training investment? This module will guide you through the principles of <strong>selective sales training</strong>, a powerful strategy to elevate your team's performance, inspired by the research of Atefi et al. (2018).
+                </p>
+                <p class="text-gray-700 leading-relaxed mb-6">
+                    Get ready to learn how to identify the right team members for training, leverage "spillover effects," and design a training rollout plan that truly works. Let's begin!
+                </p>
+                <div class="flex justify-end">
+                    <button id="start-module-btn" class="button-primary">Start Module <i class="fas fa-arrow-right ml-2"></i></button>
+                </div>
+            </section>
+
+            <!-- Section 1: Explains selective training and compares it to other approaches -->
+            <section id="section-1" class="module-section hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">1. Understanding Selective Training</h2>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    Traditional approaches often involve training all sales team members or none at all. Selective training offers a smarter, more targeted approach.
+                </p>
+                <h3 class="text-2xl font-semibold text-gray-800 mb-3">What is Selective Training?</h3>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    <strong>Selective training</strong> involves strategically choosing a subset of your sales team for specialized training, rather than a full team rollout. The goal is to maximize the return on your training investment by focusing resources where they will have the greatest impact and create positive ripple effects across the entire team.
+                </p>
+                <h3 class="text-2xl font-semibold text-gray-800 mb-3">Comparison:</h3>
+                <ul class="list-disc list-inside text-gray-700 leading-relaxed mb-6 space-y-2">
+                    <li><strong>No Training:</strong> Minimal cost, but leads to stagnation and missed opportunities for skill development and performance improvement.</li>
+                    <li><strong>Full Training:</strong> High cost, potentially inefficient if not all team members require the same level of training or if some are already highly proficient. It can also disrupt store operations significantly.</li>
+                    <li><strong>Selective Training:</strong> Optimized cost-effectiveness, targeted skill development, and leverages internal knowledge transfer (spillover effects) for broader team uplift. Requires careful planning and identification of key individuals.</li>
+                </ul>
+                <div class="flex justify-between mt-6">
+                    <button class="button-primary" onclick="showSection('intro-section')"><i class="fas fa-arrow-left mr-2"></i> Previous</button>
+                    <button class="button-primary" onclick="showSection('section-2')">Next: Effectiveness <i class="fas fa-arrow-right ml-2"></i></button>
+                </div>
+            </section>
+
+            <!-- Section 2: Details the conditions under which selective training is most effective -->
+            <section id="section-2" class="module-section hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">2. When Selective Training Works Best</h2>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    The research by Atefi et al. (2018) identifies specific conditions under which selective training is most effective. Understanding these helps you make informed decisions.
+                </p>
+                <h3 class="text-2xl font-semibold text-gray-800 mb-3">Condition 1: Low Performance Diversity</h3>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    Selective training is highly effective when your team has <strong>low performance diversity</strong>. This means that the performance levels among your team members are relatively similar. If there's a huge gap between your top and bottom performers, training only a few might not bridge that gap effectively. But if most of your team is performing at a similar, average level, training a select few can pull everyone up.
+                </p>
+                <h3 class="text-2xl font-semibold text-gray-800 mb-3">Condition 2: Diverse Tenure in Trained Team Members</h3>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    When you select team members for training, aim for a group with <strong>diverse tenure</strong>. This means including both newer hires and more experienced employees. New hires often bring fresh perspectives and are eager to learn, while experienced employees can integrate new knowledge with existing insights and act as mentors. This mix enhances the learning environment and knowledge dissemination.
+                </p>
+                <h3 class="text-2xl font-semibold text-gray-800 mb-3">Condition 3: Performance Similarity Between Trained and Untrained</h3>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    For optimal spillover effects, it's beneficial if the <strong>untrained and trained employees have performance similarity</strong>. This doesn't mean they are identical, but rather that their existing performance levels are close enough that the untrained can readily absorb and apply insights from their trained peers. If the untrained are far below the trained, the knowledge transfer might be less effective.
+                </p>
+                <div class="flex justify-between mt-6">
+                    <button class="button-primary" onclick="showSection('section-1')"><i class="fas fa-arrow-left mr-2"></i> Previous</button>
+                    <button class="button-primary" onclick="startQuiz('quiz-performance-diversity')">Next: Quiz 1 <i class="fas fa-arrow-right ml-2"></i></button>
+                </div>
+            </section>
+
+            <!-- Quiz 1: Performance Diversity - Interactive quiz to test understanding -->
+            <section id="quiz-performance-diversity" class="module-section hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Quiz 1: Performance Diversity</h2>
+                <p class="text-gray-700 leading-relaxed mb-6">
+                    Test your understanding of performance diversity in the context of selective training.
+                </p>
+                <div id="quiz-container-pd"></div>
+                <div class="flex justify-between mt-6">
+                    <button class="button-primary" onclick="showSection('section-2')"><i class="fas fa-arrow-left mr-2"></i> Previous</button>
+                    <button id="quiz-submit-btn-pd" class="button-primary">Submit Answer <i class="fas fa-check ml-2"></i></button>
+                </div>
+            </section>
+
+            <!-- Section 3: Explains spillover effects -->
+            <section id="section-3" class="module-section hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">3. The Power of Spillover Effects</h2>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    One of the most compelling reasons for selective training is the phenomenon of <strong>spillover effects</strong>.
+                </p>
+                <h3 class="text-2xl font-semibold text-gray-800 mb-3">What are Spillover Effects?</h3>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    Spillover effects occur when knowledge, skills, and best practices gained by trained team members are informally transferred to their untrained peers. This happens through:
+                </p>
+                <ul class="list-disc list-inside text-gray-700 leading-relaxed mb-4 space-y-2">
+                    <li><strong>Informal Coaching:</strong> Trained employees share tips and demonstrate new techniques on the sales floor.</li>
+                    <li><strong>Observation:</strong> Untrained employees observe the improved performance of their trained colleagues and adopt similar approaches.</li>
+                    <li><strong>Peer Learning:</strong> Discussions, problem-solving, and collaboration naturally disseminate new skills.</li>
+                    <li><strong>Motivational Boost:</strong> Observing peers succeed with new training can motivate untrained individuals to seek out knowledge or improve.</li>
+                </ul>
+                <p class="text-gray-700 leading-relaxed mb-6">
+                    This means that your training investment doesn't just benefit the individuals you send to training; it can elevate the performance of your entire team at a lower cost than full training!
+                </p>
+                <div class="flex justify-between mt-6">
+                    <button class="button-primary" onclick="showSection('quiz-performance-diversity')"><i class="fas fa-arrow-left mr-2"></i> Previous</button>
+                    <button class="button-primary" onclick="startQuiz('quiz-group-composition')">Next: Quiz 2 <i class="fas fa-arrow-right ml-2"></i></button>
+                </div>
+            </section>
+
+            <!-- Quiz 2: Group Composition - Interactive quiz to test understanding -->
+            <section id="quiz-group-composition" class="module-section hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Quiz 2: Group Composition</h2>
+                <p class="text-gray-700 leading-relaxed mb-6">
+                    Let's assess your understanding of optimal group composition for selective training.
+                </p>
+                <div id="quiz-container-gc"></div>
+                <div class="flex justify-between mt-6">
+                    <button class="button-primary" onclick="showSection('section-3')"><i class="fas fa-arrow-left mr-2"></i> Previous</button>
+                    <button id="quiz-submit-btn-gc" class="button-primary">Submit Answer <i class="fas fa-check ml-2"></i></button>
+                </div>
+            </section>
+
+            <!-- Section 4: Guides managers on strategic selection of team members -->
+            <section id="section-4" class="module-section hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">4. Strategic Selection in Action</h2>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    Now that you understand the "why," let's dive into the "how." Strategically selecting team members is key to maximizing the benefits of selective training.
+                </p>
+                <h3 class="text-2xl font-semibold text-gray-800 mb-3">Key Considerations for Selection:</h3>
+                <ul class="list-disc list-inside text-gray-700 leading-relaxed mb-4 space-y-2">
+                    <li><strong>Performance Data:</strong> Analyze sales figures, customer satisfaction scores, and other relevant KPIs to identify areas of low performance diversity where selective training can have the greatest impact.</li>
+                    <li><strong>Tenure Mix:</strong> Actively look for a blend of new hires and seasoned veterans among your potential trainees.</li>
+                    <li><strong>Learning Agility:</strong> Identify individuals who are keen learners and good at sharing knowledge.</li>
+                    <li><strong>Influence:</strong> Consider team members who are natural leaders or highly influential among their peers, as they can amplify spillover effects.</li>
+                    <li><strong>Potential for Growth:</strong> Sometimes, an average performer with high potential can benefit immensely and become a strong advocate for new techniques.</li>
+                </ul>
+                <p class="text-gray-700 leading-relaxed mb-6">
+                    Remember, the goal is not just to improve the trained individuals, but to create a cascade of improvement across the entire team.
+                </p>
+                <div class="flex justify-between mt-6">
+                    <button class="button-primary" onclick="showSection('quiz-group-composition')"><i class="fas fa-arrow-left mr-2"></i> Previous</button>
+                    <button class="button-primary" onclick="showSection('scenario-1')">Next: Scenario 1 <i class="fas fa-arrow-right ml-2"></i></button>
+                </div>
+            </section>
+
+            <!-- Scenario 1: Interactive challenge for selecting trainees for a new product launch -->
+            <section id="scenario-1" class="module-section hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Scenario Challenge 1: The New Product Launch</h2>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    <strong>Situation:</strong> Your store is launching a complex new smart home product line. Your sales team consists of:
+                </p>
+                <ul class="list-disc list-inside text-gray-700 leading-relaxed mb-4 space-y-1">
+                    <li><strong>Anna:</strong> 1 year tenure, consistent average performer, very enthusiastic.</li>
+                    <li><strong>Ben:</strong> 5 years tenure, top performer, occasionally resistant to new methods.</li>
+                    <li><strong>Clara:</strong> 8 years tenure, solid performer, great mentor to new hires.</li>
+                    <li><strong>David:</strong> 6 months tenure, still learning the ropes, shows promise.</li>
+                    <li><strong>Eva:</strong> 2 years tenure, average performer, highly collaborative.</li>
+                </ul>
+                <p class="text-gray-700 leading-relaxed mb-6">
+                    You can send <strong>two</strong> team members for in-depth, off-site training on the new product line.
+                    Who would you choose to maximize overall team performance and why?
+                </p>
+
+                <div class="space-y-3 mb-6">
+                    <label class="block text-gray-700 font-semibold mb-2">Select your two choices:</label>
+                    <div class="flex flex-col md:flex-row md:space-x-4 space-y-2 md:space-y-0">
+                        <label class="quiz-option flex items-center">
+                            <input type="checkbox" name="scenario1-choice" value="Anna" class="mr-2"> Anna
+                        </label>
+                        <label class="quiz-option flex items-center">
+                            <input type="checkbox" name="scenario1-choice" value="Ben" class="mr-2"> Ben
+                        </label>
+                        <label class="quiz-option flex items-center">
+                            <input type="checkbox" name="scenario1-choice" value="Clara" class="mr-2"> Clara
+                        </label>
+                        <label class="quiz-option flex items-center">
+                            <input type="checkbox" name="scenario1-choice" value="David" class="mr-2"> David
+                        </label>
+                        <label class="quiz-option flex items-center">
+                            <input type="checkbox" name="scenario1-choice" value="Eva" class="mr-2"> Eva
+                        </label>
+                    </div>
+                    <textarea id="scenario1-reason" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 mt-4" rows="4" placeholder="Explain your reasoning..."></textarea>
+                </div>
+
+                <div class="flex justify-between mt-6">
+                    <button class="button-primary" onclick="showSection('section-4')"><i class="fas fa-arrow-left mr-2"></i> Previous</button>
+                    <button id="submit-scenario-1" class="button-primary">Submit Selection <i class="fas fa-check ml-2"></i></button>
+                </div>
+                <div id="scenario1-feedback" class="mt-4 p-4 rounded-lg text-sm hidden"></div>
+            </section>
+
+            <!-- Scenario 2: Interactive challenge for improving customer service with selective training -->
+            <section id="scenario-2" class="module-section hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Scenario Challenge 2: Improving Customer Service</h2>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    <strong>Situation:</strong> Customer service scores have dipped slightly across your team, which shows low performance diversity in that area. You have the budget to send <strong>one or two</strong> individuals for a specialized customer service training program.
+                </p>
+                <ul class="list-disc list-inside text-gray-700 leading-relaxed mb-4 space-y-1">
+                    <li><strong>Frank:</strong> 10 years tenure, excellent product knowledge, average customer service.</li>
+                    <li><strong>Grace:</strong> 2 years tenure, good communication skills, inconsistent service quality.</li>
+                    <li><strong>Harry:</strong> 4 years tenure, highly empathetic, very good service scores, but could always learn new techniques.</li>
+                    <li><strong>Ivy:</strong> 3 months tenure, eager to learn, needs foundational service skills.</li>
+                </ul>
+                <p class="text-gray-700 leading-relaxed mb-6">
+                    Who would you choose to train, considering spillover effects and improving the team's overall customer service?
+                </p>
+
+                <div class="space-y-3 mb-6">
+                    <label class="block text-gray-700 font-semibold mb-2">Select your choice(s) (1 or 2):</label>
+                    <div class="flex flex-col md:flex-row md:space-x-4 space-y-2 md:space-y-0">
+                        <label class="quiz-option flex items-center">
+                            <input type="checkbox" name="scenario2-choice" value="Frank" class="mr-2"> Frank
+                        </label>
+                        <label class="quiz-option flex items-center">
+                            <input type="checkbox" name="scenario2-choice" value="Grace" class="mr-2"> Grace
+                        </label>
+                        <label class="quiz-option flex items-center">
+                            <input type="checkbox" name="scenario2-choice" value="Harry" class="mr-2"> Harry
+                        </label>
+                        <label class="quiz-option flex items-center">
+                            <input type="checkbox" name="scenario2-choice" value="Ivy" class="mr-2"> Ivy
+                        </label>
+                    </div>
+                    <textarea id="scenario2-reason" class="w-full p-3 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500 mt-4" rows="4" placeholder="Explain your reasoning..."></textarea>
+                </div>
+
+                <div class="flex justify-between mt-6">
+                    <button class="button-primary" onclick="showSection('scenario-1')"><i class="fas fa-arrow-left mr-2"></i> Previous</button>
+                    <button id="submit-scenario-2" class="button-primary">Submit Selection <i class="fas fa-check ml-2"></i></button>
+                </div>
+                <div id="scenario2-feedback" class="mt-4 p-4 rounded-lg text-sm hidden"></div>
+            </section>
+
+            <!-- Final Challenge: Design a training rollout plan -->
+            <section id="final-challenge" class="module-section hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Final Challenge: Design Your Training Rollout Plan</h2>
+                <p class="text-gray-700 leading-relaxed mb-4">
+                    You are now ready to apply your knowledge! Imagine you are a sales manager at "Retail Nexus," a fictional electronics store. Your team of 15 sales associates has diverse experience levels and varying performance across different product categories, but generally shows low diversity in overall customer engagement scores.
+                </p>
+                <p class="text-gray-700 leading-relaxed mb-6">
+                    Design a selective training rollout plan for a new initiative focused on improving customer engagement and upselling techniques. Your plan should address:
+                </p>
+                <ul class="list-disc list-inside text-gray-700 leading-relaxed mb-6 space-y-2">
+                    <li><strong>Who</strong> would you train (e.g., number of people, criteria for selection)?</li>
+                    <li><strong>Why</strong> these individuals? (Connect to selective training principles)</li>
+                    <li><strong>How</strong> would you facilitate knowledge transfer and spillover effects?</li>
+                    <li><strong>What</strong> outcomes would you expect?</li>
+                </ul>
+
+                <textarea id="training-plan-textarea" class="w-full p-4 border border-gray-300 rounded-lg focus:ring-blue-500 focus:border-blue-500" rows="10" placeholder="Write your training rollout plan here..."></textarea>
+
+                <div class="flex justify-between mt-6">
+                    <button class="button-primary" onclick="showSection('scenario-2')"><i class="fas fa-arrow-left mr-2"></i> Previous</button>
+                    <button id="submit-final-challenge" class="button-primary">Submit Plan <i class="fas fa-paper-plane ml-2"></i></button>
+                </div>
+                <div id="final-challenge-feedback" class="mt-4 p-4 rounded-lg text-sm hidden"></div>
+                <button id="copy-plan-btn" class="button-primary w-full mt-4 hidden">Copy Plan to Clipboard <i class="fas fa-copy ml-2"></i></button>
+            </section>
+
+            <!-- Badges and Leaderboard Section: Displays user's earned badges and total score -->
+            <section id="badges-leaderboard-section" class="module-section hidden">
+                <h2 class="text-3xl font-bold text-gray-800 mb-4">Your Progress & Achievements</h2>
+
+                <h3 class="text-2xl font-semibold text-gray-800 mb-3">Earned Badges:</h3>
+                <div id="badges-display" class="flex flex-wrap gap-2 mb-8">
+                    <!-- Badges will be dynamically added here by JavaScript -->
+                    <span class="badge">No Badges Yet</span>
+                </div>
+
+                <h3 class="text-2xl font-semibold text-gray-800 mb-3">Your Score:</h3>
+                <p class="text-gray-700 text-xl font-bold mb-4" id="final-score-display">0 Points</p>
+
+                <div class="flex justify-center mt-6">
+                    <button class="button-primary" onclick="showSection('final-challenge')"><i class="fas fa-arrow-left mr-2"></i> Back to Final Challenge</button>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <script>
+        // Global variables for score and earned badges
+        let currentScore = 0;
+        let earnedBadges = [];
+        // Points awarded for each badge
+        const BADGE_POINTS = {
+            "Performance Diversity Master": 20,
+            "Group Composition Expert": 20,
+            "Scenario Strategist I": 30,
+            "Scenario Strategist II": 30,
+            "Training Architect": 50
+        };
+
+        // Array of all section IDs for easy navigation control
+        const sections = [
+            'intro-section', 'section-1', 'section-2', 'quiz-performance-diversity',
+            'section-3', 'quiz-group-composition', 'section-4', 'scenario-1',
+            'scenario-2', 'final-challenge', 'badges-leaderboard-section'
+        ];
+
+        // --- Quiz Data Structure ---
+        // Defines the questions, options, correct answers, and feedback for each quiz
+        const quizzes = {
+            'quiz-performance-diversity': {
+                questions: [
+                    {
+                        question: "Your team has sales performance metrics ranging from 75% to 85% of target. How would you describe its performance diversity?",
+                        options: ["High performance diversity", "Moderate performance diversity", "Low performance diversity", "No diversity"],
+                        correctAnswer: "Low performance diversity",
+                        badge: "Performance Diversity Master",
+                        feedback: {
+                            correct: "Correct! When performance metrics are tightly clustered, it indicates low performance diversity, making selective training highly effective.",
+                            incorrect: "Not quite. When team members perform within a narrow range, it's considered low performance diversity."
+                        }
+                    }
+                ],
+                currentQuestionIndex: 0, // Tracks the current question for multi-question quizzes (though only one per quiz here)
+                selectedAnswer: null,     // Stores the user's selected answer
+                elementId: 'quiz-container-pd', // ID of the HTML element where the quiz is rendered
+                submitButtonId: 'quiz-submit-btn-pd' // ID of the submit button for this quiz
+            },
+            'quiz-group-composition': {
+                questions: [
+                    {
+                        question: "You're selecting 3 people for training. Which group composition aligns best with the principles of effective selective training?",
+                        options: [
+                            "Three top performers, all with 5+ years tenure.",
+                            "One new hire, one mid-tenure average performer, one experienced solid performer.",
+                            "Three underperformers, all new hires.",
+                            "Three average performers, all with similar 2-3 years tenure."
+                        ],
+                        correctAnswer: "One new hire, one mid-tenure average performer, one experienced solid performer.",
+                        badge: "Group Composition Expert",
+                        feedback: {
+                            correct: "Excellent! A diverse tenure mix (new, mid, experienced) in your trained group maximizes learning and knowledge transfer.",
+                            incorrect: "Consider the importance of diverse tenure and mixing different experience levels within the trained group for better overall impact and knowledge spread."
+                        }
+                    }
+                ],
+                currentQuestionIndex: 0,
+                selectedAnswer: null,
+                elementId: 'quiz-container-gc',
+                submitButtonId: 'quiz-submit-btn-gc'
+            }
+        };
+
+        // --- Core Navigation & Display Functions ---
+
+        /**
+         * Hides all module sections and shows the specified one.
+         * @param {string} id - The ID of the section to show.
+         */
+        function showSection(id) {
+            sections.forEach(sectionId => {
+                document.getElementById(sectionId).classList.add('hidden');
+            });
+            document.getElementById(id).classList.remove('hidden');
+            window.scrollTo(0, 0); // Scroll to top for better UX on section change
+        }
+
+        /**
+         * Updates the user's current score and displays it.
+         * @param {number} points - The points to add to the current score.
+         */
+        function updateScore(points) {
+            currentScore += points;
+            document.getElementById('score').textContent = `Score: ${currentScore}`;
+            document.getElementById('final-score-display').textContent = `${currentScore} Points`; // Update final score display as well
+        }
+
+        /**
+         * Awards a badge to the user if not already earned and updates the score.
+         * @param {string} badgeName - The name of the badge to award.
+         */
+        function awardBadge(badgeName) {
+            if (!earnedBadges.includes(badgeName)) {
+                earnedBadges.push(badgeName);
+                document.getElementById('badges-count').textContent = `Badges: ${earnedBadges.length}`;
+                renderBadges(); // Re-render badges to show the new one
+                updateScore(BADGE_POINTS[badgeName] || 0); // Add points for the badge
+            }
+        }
+
+        /**
+         * Renders all earned badges in the 'badges-display' area.
+         */
+        function renderBadges() {
+            const badgesDisplay = document.getElementById('badges-display');
+            badgesDisplay.innerHTML = ''; // Clear existing badges before re-rendering
+            if (earnedBadges.length === 0) {
+                badgesDisplay.innerHTML = '<span class="badge">No Badges Yet</span>';
+                return;
+            }
+            earnedBadges.forEach(badge => {
+                const span = document.createElement('span');
+                span.className = 'badge earned'; // Apply 'earned' class for green background
+                span.textContent = badge;
+                badgesDisplay.appendChild(span);
+            });
+        }
+
+        // --- Quiz Logic ---
+
+        /**
+         * Renders a quiz question dynamically into its container.
+         * @param {string} quizKey - The key identifying the quiz (e.g., 'quiz-performance-diversity').
+         */
+        function renderQuiz(quizKey) {
+            const quiz = quizzes[quizKey];
+            const questionData = quiz.questions[quiz.currentQuestionIndex];
+            const container = document.getElementById(quiz.elementId);
+            // Construct the HTML for the quiz question and its options
+            container.innerHTML = `
+                <p class="text-lg font-semibold text-gray-800 mb-4">${questionData.question}</p>
+                <div id="options-container-${quizKey}" class="space-y-3">
+                    ${questionData.options.map((option, index) => `
+                        <div class="quiz-option" data-option="${option}">
+                            ${option}
+                        </div>
+                    `).join('')}
+                </div>
+                <div id="feedback-${quizKey}" class="mt-4 p-4 rounded-lg text-sm hidden"></div>
+            `;
+
+            quiz.selectedAnswer = null; // Reset selected answer for the new quiz
+            const options = container.querySelectorAll('.quiz-option');
+            // Add click listeners to quiz options for selection
+            options.forEach(optionDiv => {
+                optionDiv.addEventListener('click', () => {
+                    options.forEach(o => o.classList.remove('selected')); // Remove 'selected' from all
+                    optionDiv.classList.add('selected'); // Add 'selected' to the clicked one
+                    quiz.selectedAnswer = optionDiv.dataset.option; // Store the selected answer
+                });
+            });
+
+            // Set the submit button's onclick handler
+            document.getElementById(quiz.submitButtonId).onclick = () => submitQuiz(quizKey);
+        }
+
+        /**
+         * Handles the submission of a quiz, provides feedback, and awards badges.
+         * @param {string} quizKey - The key identifying the quiz.
+         */
+        function submitQuiz(quizKey) {
+            const quiz = quizzes[quizKey];
+            const questionData = quiz.questions[quiz.currentQuestionIndex];
+            const feedbackDiv = document.getElementById(`feedback-${quizKey}`);
+            const optionsDiv = document.getElementById(`options-container-${quizKey}`);
+            const options = optionsDiv.querySelectorAll('.quiz-option');
+
+            if (!quiz.selectedAnswer) {
+                // Display error if no answer is selected
+                feedbackDiv.className = 'mt-4 p-4 rounded-lg text-sm bg-red-100 text-red-700';
+                feedbackDiv.textContent = 'Please select an answer before submitting.';
+                feedbackDiv.classList.remove('hidden');
+                return;
+            }
+
+            // Mark correct/incorrect options visually
+            options.forEach(optionDiv => {
+                optionDiv.classList.remove('selected'); // Remove selected class from all
+                if (optionDiv.dataset.option === questionData.correctAnswer) {
+                    optionDiv.classList.add('correct'); // Mark correct answer in green
+                } else if (optionDiv.dataset.option === quiz.selectedAnswer) {
+                    optionDiv.classList.add('incorrect'); // Mark incorrect chosen answer in red
+                }
+                optionDiv.style.pointerEvents = 'none'; // Disable further clicks on options
+            });
+
+            // Provide feedback based on correctness and award badge
+            if (quiz.selectedAnswer === questionData.correctAnswer) {
+                feedbackDiv.className = 'mt-4 p-4 rounded-lg text-sm bg-green-100 text-green-700';
+                feedbackDiv.textContent = questionData.feedback.correct;
+                awardBadge(questionData.badge); // Award badge for correct answer
+            } else {
+                feedbackDiv.className = 'mt-4 p-4 rounded-lg text-sm bg-red-100 text-red-700';
+                feedbackDiv.textContent = questionData.feedback.incorrect + ` The correct answer was: "${questionData.correctAnswer}".`;
+            }
+            feedbackDiv.classList.remove('hidden');
+
+            // Change submit button text and action to proceed to the next section
+            const submitBtn = document.getElementById(quiz.submitButtonId);
+            submitBtn.textContent = 'Continue to Next Section';
+            submitBtn.onclick = () => {
+                if (quizKey === 'quiz-performance-diversity') {
+                    showSection('section-3');
+                } else if (quizKey === 'quiz-group-composition') {
+                    showSection('section-4');
+                }
+            };
+        }
+
+        /**
+         * Initializes and displays a quiz.
+         * @param {string} quizKey - The key of the quiz to start.
+         */
+        function startQuiz(quizKey) {
+            showSection(quizKey);
+            renderQuiz(quizKey);
+            // Reset submit button text and action for a fresh start of the quiz
+            const quiz = quizzes[quizKey];
+            const submitBtn = document.getElementById(quiz.submitButtonId);
+            submitBtn.textContent = 'Submit Answer';
+            submitBtn.onclick = () => submitQuiz(quizKey);
+        }
+
+        // --- Scenario Logic ---
+
+        /**
+         * Handles the submission of a scenario challenge, provides feedback, and awards badges.
+         * @param {number} scenarioNum - The number of the scenario (1 or 2).
+         */
+        function submitScenario(scenarioNum) {
+            // Get selected choices and the user's reasoning
+            const choices = Array.from(document.querySelectorAll(`input[name="scenario${scenarioNum}-choice"]:checked`)).map(cb => cb.value);
+            const reason = document.getElementById(`scenario${scenarioNum}-reason`).value.trim();
+            const feedbackDiv = document.getElementById(`scenario${scenarioNum}-feedback`);
+            let feedbackMessage = '';
+            let isCorrect = false;
+
+            if (scenarioNum === 1) {
+                // Logic for Scenario 1: New Product Launch
+                // Optimal choices: A mix of diverse tenure and collaborative individuals.
+                // Anna (eager learner, newer) + Clara (experienced, mentor) or Eva (collaborative, average)
+                if (choices.length === 2 && ((choices.includes('Anna') && choices.includes('Clara')) || (choices.includes('Anna') && choices.includes('Eva')))) {
+                    feedbackMessage = "Excellent choices! Selecting Anna (eager learner, newer) and Clara/Eva (experienced, collaborative, good for spillover) aligns perfectly with the principles of diverse tenure in the trained group and leveraging knowledge transfer. You've earned points!";
+                    isCorrect = true;
+                    awardBadge("Scenario Strategist I");
+                } else if (choices.length === 2) {
+                    feedbackMessage = "Good attempt, but consider optimizing for diverse tenure and potential for spillover effects. Aim for a mix of newer and experienced staff who can share knowledge.";
+                } else {
+                    feedbackMessage = "Please select exactly two team members.";
+                }
+            } else if (scenarioNum === 2) {
+                // Logic for Scenario 2: Improving Customer Service
+                // Optimal choices: Harry (already good, can be a super-spreader) + Grace (needs consistency, good communication)
+                if ((choices.length === 2 && choices.includes('Grace') && choices.includes('Harry')) || (choices.length === 1 && choices.includes('Harry'))) {
+                    feedbackMessage = "Spot on! Training Harry (who is already good and can learn more, boosting his ability to mentor) and Grace (who needs consistency and has good communication skills, making her a good recipient of spillover) is a great strategy. This leverages low performance diversity for effective spillover. Points awarded!";
+                    isCorrect = true;
+                    awardBadge("Scenario Strategist II");
+                } else if (choices.length >= 1 && choices.length <= 2) {
+                     feedbackMessage = "Good attempt, but consider how your choices facilitate peer learning and overall team uplift, especially when performance diversity is low. Focus on those who can absorb and spread knowledge effectively.";
+                } else {
+                    feedbackMessage = "Please select one or two team members.";
+                }
+            }
+
+            // Display feedback
+            feedbackDiv.classList.remove('hidden');
+            if (isCorrect) {
+                feedbackDiv.className = 'mt-4 p-4 rounded-lg text-sm bg-green-100 text-green-700';
+            } else {
+                feedbackDiv.className = 'mt-4 p-4 rounded-lg text-sm bg-red-100 text-red-700';
+            }
+            feedbackDiv.textContent = feedbackMessage + (reason ? `\n\nYour reasoning: "${reason}"` : '');
+
+            // Disable interaction after submission
+            document.querySelectorAll(`input[name="scenario${scenarioNum}-choice"]`).forEach(cb => cb.disabled = true);
+            document.getElementById(`scenario${scenarioNum}-reason`).disabled = true;
+
+            // Change button to proceed to the next section
+            const submitBtn = document.getElementById(`submit-scenario-${scenarioNum}`);
+            submitBtn.textContent = 'Continue to Next Section';
+            submitBtn.onclick = () => {
+                if (scenarioNum === 1) {
+                    showSection('scenario-2');
+                } else if (scenarioNum === 2) {
+                    showSection('final-challenge');
+                }
+            };
+        }
+
+        // --- Final Challenge Logic ---
+
+        /**
+         * Handles the submission of the final training plan, provides feedback, and awards the final badge.
+         */
+        function submitFinalChallenge() {
+            const planText = document.getElementById('training-plan-textarea').value.trim();
+            const feedbackDiv = document.getElementById('final-challenge-feedback');
+            const copyButton = document.getElementById('copy-plan-btn');
+
+            if (planText.length < 300) { // Simple validation: plan should be at least 100 characters long
+                feedbackDiv.className = 'mt-4 p-4 rounded-lg text-sm bg-red-100 text-red-700';
+                feedbackDiv.textContent = 'Your plan seems a bit short. Please elaborate more on who, why, how, and expected outcomes.';
+                feedbackDiv.classList.remove('hidden');
+                copyButton.classList.add('hidden'); // Keep copy button hidden if invalid
+                return;
+            }
+
+            feedbackDiv.className = 'mt-4 p-4 rounded-lg text-sm bg-green-100 text-green-700';
+            feedbackDiv.textContent = 'Congratulations! You have successfully designed a training rollout plan. Reflect on how you applied the module\'s principles. You\'ve earned your final badge!';
+            feedbackDiv.classList.remove('hidden');
+            awardBadge("Training Architect"); // Award the final badge
+            copyButton.classList.remove('hidden'); // Show copy button for the plan
+
+            // Disable text area and submit button after completion
+            document.getElementById('training-plan-textarea').disabled = true;
+            document.getElementById('submit-final-challenge').textContent = 'Module Complete!';
+            document.getElementById('submit-final-challenge').disabled = true;
+
+            // Automatically navigate to the badges/leaderboard section after a short delay
+            setTimeout(() => {
+                showSection('badges-leaderboard-section');
+            }, 1500);
+        }
+
+        /**
+         * Copies the content of the training plan textarea to the clipboard.
+         */
+        function copyTrainingPlan() {
+            const textarea = document.getElementById('training-plan-textarea');
+            textarea.select(); // Select the text in the textarea
+            document.execCommand('copy'); // Execute the copy command
+            const copyButton = document.getElementById('copy-plan-btn');
+            const originalText = copyButton.innerHTML;
+            copyButton.innerHTML = 'Copied! <i class="fas fa-check ml-2"></i>'; // Provide visual feedback
+            // Revert button text after a short delay
+            setTimeout(() => {
+                copyButton.innerHTML = originalText;
+            }, 2000);
+        }
+
+        // --- Event Listeners and Initial Setup ---
+        document.addEventListener('DOMContentLoaded', () => {
+            // Initialize by showing the introduction section
+            showSection('intro-section');
+            renderBadges(); // Render any initial badges (currently none)
+
+            // Event listener for the "Start Module" button
+            document.getElementById('start-module-btn').addEventListener('click', () => showSection('section-1'));
+
+            // Event listeners for scenario submit buttons
+            document.getElementById('submit-scenario-1').addEventListener('click', () => submitScenario(1));
+            document.getElementById('submit-scenario-2').addEventListener('click', () => submitScenario(2));
+
+            // Event listeners for final challenge submit and copy buttons
+            document.getElementById('submit-final-challenge').addEventListener('click', submitFinalChallenge);
+            document.getElementById('copy-plan-btn').addEventListener('click', copyTrainingPlan);
+        });
+    </script>
+</body>
+</html>
